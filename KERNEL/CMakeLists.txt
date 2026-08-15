@@ -23,13 +23,13 @@ ADD_CUSTOM_COMMAND (
         COMMAND ld.lld
                 -m elf_i386
                 -T ${CMAKE_SOURCE_DIR}/LINKER.LD
-                $<TARGET_OBJECTS:GRAPHICS_OBJS>
                 $<TARGET_OBJECTS:KERNEL_OBJS>
+                $<TARGET_OBJECTS:GRAPHICS_OBJS>
                 -o ${KERNEL_BIN}
 
         DEPENDS
-                GRAPHICS_OBJS
                 KERNEL_OBJS
+                GRAPHICS_OBJS
 
         COMMAND_EXPAND_LISTS
         VERBATIM)
@@ -38,5 +38,5 @@ ADD_CUSTOM_TARGET (KERNEL ALL
         DEPENDS ${KERNEL_BIN})
 
 ADD_DEPENDENCIES (KERNEL
-        GRAPHICS_OBJS
-        KERNEL_OBJS)
+        KERNEL_OBJS
+        GRAPHICS_OBJS)
