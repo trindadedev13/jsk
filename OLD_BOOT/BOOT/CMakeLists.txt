@@ -4,6 +4,7 @@ ADD_CUSTOM_COMMAND (
         COMMAND nasm
                 -f bin
                 -I${CMAKE_SOURCE_DIR}/
+                -I${CMAKE_SOURCE_DIR}/INCLUDE/
                 ${CMAKE_CURRENT_SOURCE_DIR}/BOOT.ASM
                 -o ${BOOT_BIN}
 

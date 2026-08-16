@@ -1,0 +1,87 @@
+CMAKE_MINIMUM_REQUIRED (VERSION 3.20)
+
+PROJECT (JSK
+        LANGUAGES
+                C CXX ASM_NASM)
+
+SET (CMAKE_C_STANDARD 90)
+
+OPTION (MULTIBOOT "Build using Multiboot bootloader instead of custom BOOT" OFF)
+
+SET (INCLUDE_DIR ${CMAKE_SOURCE_DIR}/INCLUDE)
+SET (BUILD_DIR   ${CMAKE_BINARY_DIR})
+SET (KERNEL_BIN  ${BUILD_DIR}/KERNEL.BIN)
+SET (IMAGE       ${BUILD_DIR}/JSK.IMG)
+
+IF (MULTIBOOT)
+        MESSAGE (STATUS "Building with MULTIBOOT support")
+        ADD_SUBDIRECTORY (MULTIBOOT)
+ELSE ()
+        MESSAGE (STATUS "Building with custom BOOT")
+        ADD_SUBDIRECTORY (BOOT)
+        ADD_SUBDIRECTORY (BIOS)
+ENDIF ()
+
+ADD_SUBDIRECTORY (KERNEL)
+ADD_SUBDIRECTORY (GRAPHICS)
+
+IF (MULTIBOOT)
+        FIND_PROGRAM (GRUB_MKRESCUE grub-mkrescue)
+        IF (NOT GRUB_MKRESCUE)
+                MESSAGE (FATAL_ERROR "grub-mkrescue not found - install grub2 + xorriso")
+        ENDIF ()
+
+        SET (ISO_ROOT     ${BUILD_DIR}/ISOROOT)
+        SET (GRUB_CFG_IN  ${CMAKE_SOURCE_DIR}/MULTIBOOT/GRUB.CFG)
+        SET (GRUB_CFG_OUT ${ISO_ROOT}/boot/grub/grub.cfg)
+
+        ADD_CUSTOM_COMMAND (
+                OUTPUT ${GRUB_CFG_OUT} ${ISO_ROOT}/boot/KERNEL.BIN
+
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${ISO_ROOT}/boot/grub
+                COMMAND ${CMAKE_COMMAND} -E copy ${KERNEL_BIN} ${ISO_ROOT}/boot/KERNEL.BIN
+                COMMAND ${CMAKE_COMMAND} -E copy ${GRUB_CFG_IN} ${GRUB_CFG_OUT}
+
+                DEPENDS
+                        ${KERNEL_BIN}
+                        ${GRUB_CFG_IN}
+
+                VERBATIM)
+
+        ADD_CUSTOM_COMMAND (
+                OUTPUT ${IMAGE}
+
+                COMMAND ${GRUB_MKRESCUE} -o ${IMAGE} ${ISO_ROOT}
+
+                DEPENDS
+                        ${GRUB_CFG_OUT}
+                        ${ISO_ROOT}/boot/KERNEL.BIN
+
+                VERBATIM)
+
+        ADD_CUSTOM_TARGET (JSK ALL
+                DEPENDS ${IMAGE})
+
+        ADD_DEPENDENCIES (JSK KERNEL)
+ELSE ()
+        ADD_CUSTOM_COMMAND (
+                OUTPUT ${IMAGE}
+
+                COMMAND ${CMAKE_COMMAND} -E cat
+                        ${BOOT_BIN}
+                        ${KERNEL_BIN}
+                        > ${IMAGE}
+
+                DEPENDS
+                        ${BOOT_BIN}
+                        ${KERNEL_BIN}
+
+                VERBATIM)
+
+        ADD_CUSTOM_TARGET (JSK ALL
+                DEPENDS ${IMAGE})
+
+        ADD_DEPENDENCIES (JSK
+                BOOT
+                KERNEL)
+ENDIF ()

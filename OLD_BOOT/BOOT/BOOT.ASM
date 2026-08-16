@@ -14,20 +14,20 @@ BMAIN:
         MOV      ES, AX
 
         ; SETUP STACK
-        MOV      SP, 0x7C00
-        MOV      SS, AX
+        MOV      SP, 0x7C00 ; OVERWRITE BOOT
+        MOV      SS, AX     ; ZERO
 
-        STI
-
-        ; SETUP VESA (640x480 8bpp)
-        MOV     AX, 0x4F02
-        MOV     BX, 0x4103
-        INT     0x10
+        STI                 ; ENABLE INTERRUPTS
 
         CALL     READ_SECTORS
-        CALL     GDT_SETUP
 
-        JMP      CODE_SEG:PMODE
+        ; INITS VBE, THE VIDEOINFO STRUCT ADDR IS AT EAX
+        CALL     VBE_INIT
+
+        MOV      SI, STARTING_KERNEL
+        CALL     PRINT
+
+        JMP      0x0000:KERNEL
 
 READ_SECTORS:
         ; COUNTER
@@ -62,8 +62,11 @@ DAP:
         DW       KERNEL >> 4 ; OFFSET  WORD [DAP+6]
         DQ       1           ; LBA     WORF [DAP+8]
 
-%INCLUDE "BOOT/GDT.ASM"
-%INCLUDE "BOOT/PMODE.ASM"
+STARTING_KERNEL:
+        DB       'Starting Kernel...'
+        DB       0x00
+
+%INCLUDE "BIOS/VIDEO.ASM"
 
 TIMES   510 - ($ - $$) DB 0x00
 DW      0xAA55

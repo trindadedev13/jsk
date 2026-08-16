@@ -1,61 +1,60 @@
 #include "JSK/GRAPHICS/GRAPHICS.H"
 
 #include <stddef.h>
+#include <stdint.h>
+
+#include "JSK/BOOT/VBE.H"
+
+struct VBE_MODE_INFO *video = NULL;
 
 void
-clear_screen (void)
+init_graphics (struct VBE_MODE_INFO *vmi)
 {
-        size_t x;
-        size_t y;
+        video = vmi;
+}
 
-        for (y = 0; y < VESA_HEIGHT; ++y)
+void
+set_pixel (size_t x, size_t y, uint32_t color)
+{
+        uint32_t *fb = (uint32_t *)video->framebuffer;
+        fb[y * (video->pitch / 4) + x] = color;
+}
+
+uint8_t
+get_pixel (size_t x, size_t y)
+{
+        uint32_t *fb = (uint32_t *)video->framebuffer;
+        return fb[y * (video->pitch / 4) + x];
+}
+
+void
+clear_screen (uint32_t color)
+{
+        size_t y, x;
+        for (y = 0; y < video->height; ++y)
+                for (x = 0; x < video->width; ++x)
+                        set_pixel (x, y, color);
+}
+
+void
+draw_char (size_t x, size_t y, uint32_t color, char ch)
+{
+}
+
+void
+draw_str (size_t x, size_t y, uint32_t color, const char *str, size_t len)
+{
+}
+
+void
+draw_rect (size_t x, size_t y, size_t w, size_t h, uint32_t color)
+{
+        size_t cx, cy;
+        for (cy = y; cy < y + h; ++cy)
         {
-                for (x = 0; x < VESA_WIDTH; ++x)
+                for (cx = x; cx < x + w; ++cx)
                 {
-                        set_pixel (x, y, COLOR_BLACK);
+                        set_pixel (cx, cy, color);
                 }
-        }
-}
-
-void
-draw_bitmap (size_t x, size_t y, const uint8_t *bitmap, uint8_t color)
-{
-        size_t cx;
-        size_t cy;
-
-        for (cy = 0; cy < FONT_HEIGHT; ++cy)
-        {
-                for (cx = 0; cx < FONT_WIDTH; ++cx)
-                {
-                        if (bitmap[cy] & (1u << (FONT_WIDTH - 1 - cx)))
-                        {
-                                set_pixel (x + cx, y + cy, color);
-                        }
-                }
-        }
-}
-
-void
-draw_char (size_t x, size_t y, uint8_t color, char ch)
-{
-        const uint8_t *bitmap;
-
-        bitmap = FONT + ((unsigned char)ch * FONT_HEIGHT);
-
-        draw_bitmap (x, y, bitmap, color);
-}
-
-void
-draw_str (size_t x, size_t y, uint8_t color, const char *str, size_t len)
-{
-        size_t i;
-        size_t font_x;
-
-        font_x = x;
-
-        for (i = 0; i < len; ++i)
-        {
-                draw_char (font_x, y, color, str[i]);
-                font_x += FONT_WIDTH;
         }
 }

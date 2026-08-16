@@ -1,16 +1,17 @@
 SET (SOURCES
-        ENTRY.ASM
+        CM_ENTRY
+        GDT.ASM
         MAIN.C)
 
 SET (DEPS 
-        MULTIBOOT
         KERNEL_OBJS
-        GRAPHICS_OBJS)
+        GRAPHICS_OBJS
+        BIOS_OBJS)
 
 SET (DEPS_OBJS
-        $<TARGET_OBJECTS:MULTIBOOT>
         $<TARGET_OBJECTS:KERNEL_OBJS>
-        $<TARGET_OBJECTS:GRAPHICS_OBJS>)
+        $<TARGET_OBJECTS:GRAPHICS_OBJS>
+        $<TARGET_OBJECTS:BIOS_OBJS>)
 
 INCLUDE (${CMAKE_SOURCE_DIR}/CMAKE/FIXEXTS.CMAKE)
 
@@ -32,7 +33,7 @@ ADD_CUSTOM_COMMAND (
 
         COMMAND ld.lld
                 -m elf_i386
-                -T ${CMAKE_SOURCE_DIR}/MULTIBOOT/LINKER.LD
+                -T ${${CMAKE_SOURCE_DIR}/BOOT/LINKER.LD}
                 ${DEPS_OBJS}
                 -o ${KERNEL_BIN}
 
