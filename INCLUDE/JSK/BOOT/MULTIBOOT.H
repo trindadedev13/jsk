@@ -5,31 +5,31 @@
 
 #include "JSK/BOOT/VBE.H"
 
-struct MB_AOUT_SYM_TABLE
+typedef struct mb_aout_sym_table_t
 {
         uint32_t tab_size;
         uint32_t str_size;
         uint32_t addr;
         uint32_t reserved;
-} __attribute__ ((packed));
+} __attribute__ ((packed)) MultibootAOutSymTable;
 
-struct MB_ELF_SECTION_HEADER_TABLE
+typedef struct mb_elf_section_header_table_t
 {
         uint32_t num;
         uint32_t size;
         uint32_t addr;
         uint32_t shndx;
-} __attribute__ ((packed));
+} __attribute__ ((packed)) MultibootELFSectionHeaderTable;
 
-struct MB_MODULE
+typedef struct mb_module_t
 {
         uint32_t mod_start;
         uint32_t mod_end;
         uint32_t str;
         uint32_t reserved;
-} __attribute__ ((packed));
+} __attribute__ ((packed)) MultibootModule;
 
-struct MB_INFO
+typedef struct mb_info_t
 {
         uint32_t flags;
         uint32_t mem_lower;
@@ -42,8 +42,8 @@ struct MB_INFO
 
         union
         {
-                struct MB_AOUT_SYM_TABLE aout_sym;
-                struct MB_ELF_SECTION_HEADER_TABLE elf_sec;
+                MultibootAOutSymTable aout_sym;
+                MultibootELFSectionHeaderTable elf_sec;
         } u;
 
         uint32_t mmap_length;
@@ -58,14 +58,14 @@ struct MB_INFO
         uint32_t apm_table;
 
         uint32_t vbe_control_info;
-        uint32_t vbe_mode_info;
+        VbeModeInfo *vbe_mode_info;
         uint16_t vbe_mode;
         uint16_t vbe_interface_seg;
         uint16_t vbe_interface_off;
         uint16_t vbe_interface_len;
-} __attribute__ ((packed));
+} __attribute__ ((packed)) MultibootInfo;
 
-struct MB_MMAP_ENTRY
+typedef struct mb_mmap_entry_t
 {
         uint32_t size;
         uint32_t addr_low;
@@ -78,6 +78,6 @@ struct MB_MMAP_ENTRY
 #define MULTIBOOT_MEMORY_NVS 4
 #define MULTIBOOT_MEMORY_BADRAM 5
         uint32_t type;
-} __attribute__ ((packed));
+} __attribute__ ((packed)) MultibootMMapEntry;
 
 #endif

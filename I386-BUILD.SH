@@ -1,4 +1,5 @@
-rm -rf ./.BUILD
+rm .BUILD/JSK.IMG
+rm .BUILD/KERNEL.BIN
 
 cmake -B .BUILD -S . \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \

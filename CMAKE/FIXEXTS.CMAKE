@@ -24,3 +24,12 @@ FOREACH (SOURCE ${SOURCES})
                         LANGUAGE ASM_NASM)
         ENDIF ()
 ENDFOREACH ()
+
+FOREACH (SOURCE ${SOURCES})
+        IF (SOURCE MATCHES "\\.M$")
+                SET_SOURCE_FILES_PROPERTIES (
+                        ${SOURCE}
+                        PROPERTIES
+                        LANGUAGE OBJC)
+        ENDIF ()
+ENDFOREACH ()

@@ -1,4 +1,4 @@
-[BITS 16]
+[BITS 32]
 
 SECTION .text
         GLOBAL   _KERNEL_START
@@ -30,8 +30,8 @@ INIT_ARRAYS.LOOP:
         JNE      INIT_ARRAYS.LOOP ; IF NOT EQUAL END, CONTINUE 
 
 INIT_ARRAYS.END:
-        PUSH     ESI
         PUSH     EDI
+        PUSH     ESI
         CALL     kernel_main
         ADD      ESP, 8      ; CLEAR FRAME
         JMP      $

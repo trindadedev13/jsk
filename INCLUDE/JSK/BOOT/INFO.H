@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-struct __attribute__((packed)) BOOT_INFO
+typedef struct boot_info_t
 {
     uint32_t vbe_mode_info;
-};
+} __attribute__((packed)) BootInfo;
 
 #endif

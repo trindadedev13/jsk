@@ -1,31 +1,37 @@
 SET (SOURCES
         ENTRY.ASM
-        MAIN.C)
+        MAIN.M)
+
+## I Don't Like this way of linking.
+## Maybe at least an global list of deps
+## where each Target includes it's deps
+## and at end we link all here
 
 SET (DEPS 
         MULTIBOOT
         KERNEL_OBJS
-        GRAPHICS_OBJS)
+        GRAPHICS_OBJS
+        CPU_OBJS
+        LIBC_OBJS
+        OBJC_RUNTIME_OBJS
+        #OBJC_FOUNDATION_OBJS
+        )
 
 SET (DEPS_OBJS
         $<TARGET_OBJECTS:MULTIBOOT>
         $<TARGET_OBJECTS:KERNEL_OBJS>
-        $<TARGET_OBJECTS:GRAPHICS_OBJS>)
+        $<TARGET_OBJECTS:GRAPHICS_OBJS>
+        $<TARGET_OBJECTS:CPU_OBJS>
+        $<TARGET_OBJECTS:LIBC_OBJS>
+        $<TARGET_OBJECTS:OBJC_RUNTIME_OBJS>
+        #$<TARGET_OBJECTS:OBJC_FOUNDATION_OBJS>
+        )
 
 INCLUDE (${CMAKE_SOURCE_DIR}/CMAKE/FIXEXTS.CMAKE)
 
 ADD_LIBRARY (KERNEL_OBJS
         OBJECT
         ${SOURCES})
-
-TARGET_INCLUDE_DIRECTORIES (KERNEL_OBJS PRIVATE
-        ${INCLUDE_DIR})
-
-TARGET_COMPILE_OPTIONS (KERNEL_OBJS PRIVATE
-        $<$<COMPILE_LANGUAGE:C,CXX>:
-        -Wall -Wextra -pedantic -pedantic-errors
-        -nostdlib -nostdinc++ -nodefaultlibs
-        -fno-builtin -fno-stack-protector>)
 
 ADD_CUSTOM_COMMAND (
         OUTPUT ${KERNEL_BIN}

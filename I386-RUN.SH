@@ -1,1 +1,1 @@
-qemu-system-i386 -drive file=.BUILD/JSK.IMG,format=raw -m 32M
+qemu-system-i386 -cdrom .BUILD/JSK.IMG -boot d -serial stdio

@@ -7,6 +7,10 @@ SET (CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 SET (CMAKE_C_COMPILER clang)
 SET (CMAKE_C_FLAGS    "-target i386-unknown-none -ffreestanding")
 
+# Somehow this failed by not finding clang, so i'll just comment out
+# SET (CMAKE_OBJC_COMPILER clang)
+SET (CMAKE_OBJC_FLAGS    "-target i386-unknown-none -ffreestanding")
+
 SET (CMAKE_CXX_COMPILER clang++)
 SET (CMAKE_CXX_FLAGS    "-target i386-unknown-none -ffreestanding -fno-exceptions -fno-rtti")
 

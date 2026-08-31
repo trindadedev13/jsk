@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-struct VBE_MODE_INFO
+typedef struct vbe_mode_info_t
 {
         // mandatory info for all VBE revisions
         uint16_t attributes;
@@ -46,6 +46,6 @@ struct VBE_MODE_INFO
         uint16_t off_screen_mem_size;
 
         uint8_t reserved1[206]; // pad until 256 bytes total
-} __attribute__ ((packed));
+} __attribute__ ((packed)) VbeModeInfo;
 
 #endif

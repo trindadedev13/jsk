@@ -1,3 +1,5 @@
+[BITS 32]
+
 MBOOT_PAGE_ALIGN EQU 1 << 0
 MBOOT_MEM_INFO   EQU 1 << 1
 MBOOT_USE_GFX    EQU 1 << 2
@@ -11,9 +13,9 @@ SECTION .multiboot
         DD       MBOOT_MAGIC
         DD       MBOOT_FLAGS
         DD       MBOOT_CHECKSUM
-        DD       0x00, 0x00, 0x00, 0x00, 0x00
+        DD       0, 0, 0, 0, 0
 
-        DD       0x01
+        DD       0
         DD       1280
         DD       720
         DD       32
