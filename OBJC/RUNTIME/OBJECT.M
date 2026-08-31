@@ -1,10 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "OBJC/OBJC.H"
 
-extern void puts (const char *);
+void
+object_release (id obj)
+{
+    if (!obj)
+        return;
+
+    if (obj->ref_count == 0)
+        return;
+
+    obj->ref_count--;
+
+    if (obj->ref_count == 0)
+        [obj dealloc];
+}
 
 @implementation Object
 
@@ -15,14 +29,7 @@ extern void puts (const char *);
 
 + (id)alloc
 {
-    id obj = (id)objc_malloc(class_getInstanceSize (self));
-    if (obj)
-    {
-        memset (obj, 0, class_getInstanceSize (self));
-        object_setClass (obj, self);
-    }
-
-    return obj;
+    return object_alloc(self);
 }
 
 - (id)init
@@ -32,7 +39,7 @@ extern void puts (const char *);
 
 - (void)dealloc
 {
-    objc_free (self);
+    object_dealloc (self);
 }
 
 - (Class)class
@@ -83,6 +90,29 @@ extern void puts (const char *);
 - (BOOL)respondsToSelector:(SEL)sel
 {
     return object_respondsToSelector (self, sel);
+}
+
+// Retain
+- (id)retain
+{
+    object_retain (self);
+    return self;
+}
+
+- (void)release
+{
+    object_release (self);
+}
+
+- (id)autorelease
+{
+    object_autorelease (self);
+    return self;
+}
+
+- (uint32_t)refCount
+{
+    return object_refCount(self);
 }
 
 @end

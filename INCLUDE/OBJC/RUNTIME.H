@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /** a pointer to an instance of a class */
 typedef struct objc_object_t *id;
@@ -22,14 +23,24 @@ typedef struct objc_class_t *Class;
 typedef struct objc_protocol_t Protocol;
 #endif
 
+#ifdef __OBJC__
+@class NSAutoreleasePool;
+#else
+typedef struct objc_autorelease_pool_t NSAutoreleasePool;
+#endif
+
 /** a pointer to a method implementation */
 typedef id (*IMP) (id, SEL, ...);
 
 /** this allows using custom allocators */
 typedef void *(*objc_malloc_t) (size_t);
+typedef void *(*objc_calloc_t) (size_t, size_t);
+typedef void *(*objc_realloc_t) (void *, size_t);
 typedef void (*objc_free_t) (void *);
 
 extern objc_malloc_t objc_malloc;
+extern objc_calloc_t objc_calloc;
+extern objc_realloc_t objc_realloc;
 extern objc_free_t objc_free;
 
 /** a null object pointer */
@@ -155,5 +166,17 @@ const char *proto_getName (Protocol *proto);
 
 /** checks if given 'proto' conforms to 'otherProto' */
 BOOL proto_conformsTo (Protocol *proto, Protocol *otherProto);
+
+id object_alloc (Class cls);
+void object_dealloc (id obj);
+
+void object_retain (id obj);
+void object_release (id obj);
+void object_autorelease (id obj);
+uint32_t object_refCount (id obj);
+
+void objc_autorelease_pool_add (NSAutoreleasePool *pool, id obj);
+void objc_autorelease_pool_push (NSAutoreleasePool *pool);
+void objc_autorelease_pool_pop (NSAutoreleasePool *pool);
 
 #endif

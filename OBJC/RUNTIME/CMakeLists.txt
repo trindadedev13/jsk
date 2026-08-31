@@ -8,6 +8,8 @@ SET (SOURCES
         STATICS.C
         CATEGORY.C
         PROTOCOL.C
+        OBJECT.C
+        NSAUTORELEASEPOOL.M
         OBJECT.M
         PROTOCOL.M)
 

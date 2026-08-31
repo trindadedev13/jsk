@@ -1,9 +1,10 @@
-#ifndef OBJC_GNU_H
-#define OBJC_GNU_H
+#ifndef OBJC_ABI_H
+#define OBJC_ABI_H
 
 /** GNU GCC Objective-C ABI */
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include "OBJC/RUNTIME.H"
 
@@ -109,11 +110,13 @@ struct objc_selector_t
 struct objc_object_t
 {
     Class isa;
+    uint32_t ref_count;
 };
 
 struct objc_protocol_t
 {
-    Class cls;
+    struct objc_object_t obj;
+
     const char *name;
 
     ProtocolList *protocols;
@@ -142,6 +145,16 @@ struct objc_class_t
     struct objc_protocol_list_t *protocols;
 
     void *extra;
+};
+
+struct objc_autorelease_pool_t {
+    struct objc_object_t obj;
+
+    id *objects;
+    unsigned int count;
+    unsigned int capacity;
+
+    struct objc_autorelease_pool_t *previous;
 };
 
 #endif

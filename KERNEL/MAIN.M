@@ -36,6 +36,7 @@
 
 - (void)dealloc
 {
+    printf ("dealloc\n");
     free(_name);
     [super dealloc];
 }
@@ -58,7 +59,14 @@
 
 @end
 
-
+static void test()
+{
+    @autoreleasepool
+    {
+        People *p = [[[People alloc] init: "Aquiles Trindade"] autorelease];
+        [p sayHi];
+    }
+}
 
 void
 kernel_main (MultibootInfo *mbinfo, uint32_t magic)
@@ -68,9 +76,7 @@ kernel_main (MultibootInfo *mbinfo, uint32_t magic)
     init_graphics (mbinfo->vbe_mode_info, NULL);
     clear_screen (color(0,0,255));
 
-    People *p = [[People alloc] init:"Aquiles"];
-    [p setName:"Aquiles Trindade"];
-    [p sayHi];
+    test();
 
     for (;;)
     {

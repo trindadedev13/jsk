@@ -5,6 +5,8 @@
 #include "OBJC/RUNTIME_INTERNAL.H"
 
 objc_malloc_t objc_malloc = malloc;
+objc_calloc_t objc_calloc = calloc;
+objc_realloc_t objc_realloc = realloc;
 objc_free_t objc_free = free;
 
 static BOOL
