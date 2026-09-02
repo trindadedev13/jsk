@@ -1,1 +1,0 @@
-qemu-system-i386 -cdrom .BUILD/JSK.IMG -boot d -serial stdio
