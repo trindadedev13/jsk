@@ -21,6 +21,12 @@ __objc_module_register (Module *mod)
     struct objc_selector_t *refs = mod->symtab->selectors;
     if (refs && mod->symtab->selector_count > 0)
     {
+        for (size_t i = 0; i < mod->symtab->selector_count; i++)
+        {
+            SEL entry = &refs[i];
+            SEL canon = sel_registerTypedName (entry->name, entry->type);
+            *entry = *canon;
+        }
     }
 
     unsigned short j = 0;

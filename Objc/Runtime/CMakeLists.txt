@@ -8,6 +8,7 @@ SET (SOURCES
         Statics.c
         Category.c
         Protocol.c
+        Sel.c
         Object.m
         Protocol.m)
 

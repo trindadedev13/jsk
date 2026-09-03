@@ -161,8 +161,14 @@ Class object_getSuperclass (id obj);
 /** checks if given instance class matches, or is a subclass of 'cls' */
 BOOL object_isKindOfClass (id obj, Class cls);
 
+SEL sel_registerTypedName (const char *name, const char *type);
+SEL sel_registerName (const char *name);
+
 /** returns the name of given selector */
 const char *sel_getName (SEL sel);
+
+/** returns the id of given selector */
+uint32_t sel_getId (SEL sel);
 
 /** returns the name of given protocol */
 const char *proto_getName (Protocol *proto);

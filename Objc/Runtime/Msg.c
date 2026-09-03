@@ -17,7 +17,7 @@ __objc_msg_lookup (Class cls, SEL sel)
     while (cls)
     {
         HashItem *item
-            = __objc_hash_lookup (cls, (const char *)sel->id, sel->type);
+            = __objc_hash_lookup (cls, sel_getName (sel), sel->type);
         if (item)
             return item->imp;
         cls = cls->superclass;
@@ -44,13 +44,12 @@ __objc_send_initialize (Class cls)
         __objc_send_initialize (cls->superclass);
 
     // Find and call the initialize method
-    static struct objc_selector_t initialize = {
-        .id = (void *)"initialize", // The selector for the initialize method
-        .type
-        = (char *)"v16@0:8" // The type encoding for the initialize method
-    };
+    static SEL initialize = NULL;
+    if (!initialize)
+        initialize = sel_registerTypedName ("initialize", "v16@0:8");
+
     IMP imp
-        = __objc_msg_lookup (cls, &initialize); // Lookup the initialize method
+        = __objc_msg_lookup (cls, initialize); // Lookup the initialize method
     if (imp)
     {
         // Call the initialize method - suppress function cast warning as this
@@ -59,7 +58,7 @@ __objc_send_initialize (Class cls)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
         ((void (*) (id, SEL))imp) (
-            (id)cls, &initialize); // Call the initialize method on the class
+            (id)cls, initialize); // Call the initialize method on the class
 #pragma GCC diagnostic pop
     }
 
@@ -177,12 +176,4 @@ class_metaclassRespondsToSelector (Class cls, SEL selector)
 
     return class_respondsToSelector (
         cls, selector); // Check if the class responds to the selector
-}
-
-const char *
-sel_getName (SEL sel)
-{
-    if (!sel)
-        return NULL;
-    return (const char *)sel->id; // Return the selector name
 }
