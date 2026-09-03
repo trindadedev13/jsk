@@ -74,7 +74,11 @@ IMP
 objc_msg_lookup (id receiver, SEL selector)
 {
     if (!receiver)
+    {
+        objc_debug ("got a null receiver for %s, returning stub method.\n",
+                    sel_getName (selector));
         return (IMP)__objc_nil_method;
+    }
 
     // First load the static instances and categories
     static BOOL init = NO;
