@@ -83,3 +83,17 @@ memcpy (void *dst, const void *src, size_t n)
 
     return dst;
 }
+
+int
+memcmp (const void *mm1, const void *mm2, size_t count)
+{
+    const unsigned char *m1 = mm1;
+    const unsigned char *m2 = mm2;
+
+    while (count-- > 0)
+    {
+        if (*m1++ != *m2++)
+            return m1[-1] < m2[-1] ? -1 : 1;
+    }
+    return 0;
+}
