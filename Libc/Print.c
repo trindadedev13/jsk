@@ -6,6 +6,7 @@ int
 putchar (int ch)
 {
     CpuPutChar (ch);
+    return (unsigned char)ch;
 }
 
 void
