@@ -88,20 +88,16 @@ objc_msg_lookup (id receiver, SEL selector)
     // Get the class of the receiver
     Class cls = receiver->isa;
     if (!cls)
-    {
         objc_panic ("receiver @%p class is Nil (selector=%s)", receiver,
                     sel_getName (selector));
-    }
 
     IMP imp = __objc_msg_lookup (cls, selector);
     if (!imp)
-    {
         objc_panic ("class=%c[%s %s] selector->types=%s cannot send "
                     "message\n",
                     receiver->isa->info & objc_class_flag_meta ? '+' : '-',
                     receiver->isa->name, sel_getName (selector),
                     selector->type);
-    }
 
     // If the class has of the receiver not been initialized, then this is the
     // time to do it

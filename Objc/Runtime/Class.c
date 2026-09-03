@@ -42,7 +42,7 @@ __objc_class_register (Class cls)
         }
 
         if (strcmp (cls->name, class_table[i]->name) == 0)
-            objc_printf ("duplicated class named: %s\n", cls->name);
+            objc_debug ("warning: duplicated class named: %s\n", cls->name);
     }
 
     objc_panic ("class table is full. cannot register class: %s\n", cls->name);

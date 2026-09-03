@@ -85,23 +85,6 @@ objc_setAllocator (objc_malloc_t om, objc_free_t of)
     objc_free = of;
 }
 
-#ifndef objc_panic
-#define objc_panic(fmt, ...)                                                  \
-    __objc_panic (__func__, fmt __VA_OPT__ (, ) __VA_ARGS__)
-
-[[noreturn]] OBJC_UNUSED static void
-__objc_panic (const char *func_name, const char *fmt, ...)
-{
-    va_list va;
-    va_start (va, fmt);
-    printf ("objc: %s panic: ", func_name);
-    vprintf (fmt, va);
-    va_end (va);
-
-    abort ();
-}
-#endif
-
 #ifndef objc_printf
 #define objc_printf(fmt, ...) __objc_printf (fmt __VA_OPT__ (, ) __VA_ARGS__)
 
@@ -113,6 +96,41 @@ __objc_printf (const char *fmt, ...)
     printf ("objc: ");
     vprintf (fmt, va);
     va_end (va);
+}
+#endif
+
+#ifdef OBJC_DEBUG
+#ifndef objc_debug
+#define objc_debug(fmt, ...) __objc_debug(__func__, fmt __VA_OPT__(, ) __VA_ARGS__)
+
+OBJC_UNUSED static void
+__objc_debug(const char *func_name, const char *fmt, ...)
+{
+    va_list va;
+    va_start(va, fmt);
+    printf("objc-debug: [%s]: ", func_name);
+    vprintf(fmt, va);
+    va_end(va);
+}
+#endif
+#else
+#define objc_debug(...) ((void)0)
+#endif
+
+#ifndef objc_panic
+#define objc_panic(fmt, ...)                                                  \
+    __objc_panic (__func__, fmt __VA_OPT__ (, ) __VA_ARGS__)
+
+[[noreturn]] OBJC_UNUSED static void
+__objc_panic (const char *func_name, const char *fmt, ...)
+{
+    va_list va;
+    va_start (va, fmt);
+    printf ("objc-panic [%s]: ", func_name);
+    vprintf (fmt, va);
+    va_end (va);
+
+    abort ();
 }
 #endif
 
