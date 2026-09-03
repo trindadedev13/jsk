@@ -6,8 +6,8 @@
 #define COM1 0x3F8
 
 /** put char in COM1 */
-extern void JSKCpuPutChar (uint8_t);
+extern void CpuPutChar (uint8_t);
 
-[[noreturn]] extern void JSKCpuAbort (void);
+[[noreturn]] extern void CpuAbort (void);
 
 #endif
