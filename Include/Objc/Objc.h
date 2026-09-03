@@ -10,6 +10,7 @@
 
 /** Include Protocols first */
 #include "Objc/Object+Protocol.h"
+#include "Objc/Alloc+Protocol.h"
 #include "Objc/Retain+Protocol.h"
 
 /** Now the classes */

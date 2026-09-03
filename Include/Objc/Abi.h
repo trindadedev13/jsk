@@ -1,7 +1,10 @@
 #ifndef OBJC_ABI_H
 #define OBJC_ABI_H
 
-/** GNU GCC Objective-C ABI */
+/**
+ * This file defines all structures bodies used in the Runtime.
+ * including GCC Abi and others.
+ */
 
 #include <stddef.h>
 #include <stdint.h>
@@ -9,6 +12,10 @@
 #include "Objc/Runtime.h"
 
 #define OBJC_GNU_ABI_VERSION 8
+
+#define OBJC_OBJECT_BODY                                                      \
+    Class isa;                                                                \
+    size_t ref_count
 
 typedef struct objc_super_t
 {
@@ -103,19 +110,27 @@ typedef struct objc_module_t
 
 struct objc_selector_t
 {
-    void *id;
+    union
+    {
+        const char *name;
+        size_t id;
+    };
     char *type;
 };
 
+/**
+ * Represents any object that inherits from Object root class.
+ * Any valid object should be possible to cast to this.
+ * see @macro OBJC_OBJECT_BODY.
+ */
 struct objc_object_t
 {
-    Class isa;
-    size_t ref_count;
+    OBJC_OBJECT_BODY;
 };
 
 struct objc_protocol_t
 {
-    struct objc_object_t obj;
+    OBJC_OBJECT_BODY; /** Protocol is a Object */
 
     const char *name;
 
@@ -147,8 +162,9 @@ struct objc_class_t
     void *extra;
 };
 
-struct objc_autorelease_pool_t {
-    struct objc_object_t obj;
+struct objc_autorelease_pool_t
+{
+    OBJC_OBJECT_BODY; /** NSAutoreleasePool is a Object */
 
     id *objects;
     unsigned int count;

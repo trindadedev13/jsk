@@ -40,7 +40,7 @@ __objc_protocol_register (Protocol *proto)
         if (strcmp (protocol_table[i]->name, proto->name) == 0)
         {
             objc_printf ("warning: duplicate Protocol named %s\n",
-                         proto->name);
+                         protocol_table[i]->name);
             return YES;
         }
     }

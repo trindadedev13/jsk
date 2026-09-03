@@ -80,12 +80,12 @@ object_release (id obj)
     object_dealloc (self);
 }
 
-- (Class)class
+- (Class)__OBJC_OBJECT_CLASS_METHOD_NAME
 {
     return object_getClass (self);
 }
 
-+ (Class)class
++ (Class)__OBJC_OBJECT_CLASS_METHOD_NAME
 {
     return self;
 }
