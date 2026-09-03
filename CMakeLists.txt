@@ -27,7 +27,7 @@ SET (_SL_FLAGS "-nostdlib -nodefaultlibs")
 
 SET (CMAKE_C_FLAGS    "${CMAKE_C_FLAGS} ${_SC_FLAGS}")
 SET (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${_SC_FLAGS} -nostdinc++")
-SET (CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} ${_SC_FLAGS} -nostdinc++ -fobjc-runtime=gcc")
+SET (CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} ${_SC_FLAGS} -fobjc-runtime=gcc")
 
 SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${_SL_FLAGS}")
 
