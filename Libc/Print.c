@@ -5,7 +5,7 @@
 int
 putchar (int ch)
 {
-    JSKCpuPutChar (ch);
+    CpuPutChar (ch);
 }
 
 void

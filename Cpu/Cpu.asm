@@ -3,12 +3,12 @@
 %DEFINE COM1 0x3F8
 
 SECTION .text
-        GLOBAL   JSKCpuOutb
-        GLOBAL   JSKCpuInb
-        GLOBAL   JSKCpuPutChar
-        GLOBAL   JSKCpuAbort
+        GLOBAL   CpuOutb
+        GLOBAL   CpuInb
+        GLOBAL   CpuPutChar
+        GLOBAL   CpuAbort
 
-JSKCpuOutb:
+CpuOutb:
         PUSH     EBP
         MOV      EBP, ESP
 
@@ -20,7 +20,7 @@ JSKCpuOutb:
 
         RET
 
-JSKCpuInb:
+CpuInb:
         PUSH     EBP
         MOV      EBP, ESP
 
@@ -32,17 +32,17 @@ JSKCpuInb:
         RET
 
 
-JSKCpuPutChar:
+CpuPutChar:
         PUSH     EBP
         MOV      EBP, ESP
 
-JSKCpuPutCharLoop:
+CpuPutCharLoop:
         MOV      DX, COM1 + 0x05
         IN       AL, DX
 
         AND      AL, 0x20
         CMP      AL, 0x00
-        JE       JSKCpuPutCharLoop
+        JE       CpuPutCharLoop
 
         MOV      DX, COM1
         MOV      AL, [ESP + 8]
@@ -52,7 +52,7 @@ JSKCpuPutCharLoop:
         
         RET
 
-JSKCpuAbort:
+CpuAbort:
         CLI
         HLT
         JMP      $

@@ -6,5 +6,5 @@
 void
 abort (void)
 {
-    JSKCpuAbort ();
+    CpuAbort ();
 }
