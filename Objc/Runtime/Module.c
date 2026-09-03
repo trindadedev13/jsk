@@ -23,9 +23,6 @@ __objc_module_register (Module *mod)
     {
     }
 
-    objc_printf ("%s cls_def_cnt=%d cat_def_cnt=%d\n", mod->name,
-                 mod->symtab->class_count, mod->symtab->category_count);
-
     unsigned short j = 0;
     for (unsigned short i = 0; i < mod->symtab->class_count; i++)
         __objc_class_register ((Class)mod->symtab->defs[j++]);
