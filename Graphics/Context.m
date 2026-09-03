@@ -36,7 +36,7 @@
      size_t height = [_surface height];
      for (size_t y = 0; y < height; y++)
         for (size_t x = 0; x < width; x++)
-            [_surface setPixelAtX:x y:y color:color];
+            SurfaceSetPixelAt (_surface, x, y, color);
 }
 
 - (void)setPixelAtX: (size_t)x y:(size_t)y color:(Color)color

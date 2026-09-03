@@ -8,7 +8,7 @@
 #include "Boot/Vbe.h"
 #include "Graphics/Graphics.h"
 
-static void JSKInitGraphics (VbeModeInfo *vmi)
+static void InitGraphics (VbeModeInfo *vmi)
 {
     GSSurface *surface = [[GSSurface alloc] initWithVbe:vmi];
     GSFont *font = GetDefaultFont ();
@@ -23,7 +23,7 @@ JSKKernelMain (MultibootInfo *mbinfo, uint32_t magic)
 {
     (void)magic;
 
-    JSKInitGraphics (mbinfo->vbe_mode_info);
+    InitGraphics (mbinfo->vbe_mode_info);
     puthex (magic);
 
     for (;;)
