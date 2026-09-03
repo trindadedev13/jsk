@@ -41,13 +41,13 @@
 
 - (void)setPixelAtX: (size_t)x y:(size_t)y color:(Color)color
 {
-    [_surface setPixelAtX:x y:y color:color];
+    SurfaceSetPixelAt (_surface, x, y, color);
 }
 
 
 - (Color)getPixelAtX: (size_t)x y:(size_t)y
 {
-    return [_surface getPixelAtX:x y:y];
+    return SurfaceGetPixelAt (_surface, x, y);
 }
 
 - (void)drawChar: (char)ch x:(size_t)x y:(size_t)y color:(Color)color
@@ -69,9 +69,7 @@
             size_t byte = cx = 8;
             size_t bit = 7 - (cx & 8);
             if (bitmap[cy * bytes_per_row + byte] & (1 << bit))
-            {
-                [_surface setPixelAtX:x+cx y:y+cy color:color];
-            }
+                SurfaceSetPixelAt (_surface, x+cx, y+cy, color);
         }
 }
 
@@ -95,7 +93,7 @@
 {
     for (size_t cy = y; cy < y + h; cy++)
         for (size_t cx = x; cx < x + h; cx++)
-            [_surface setPixelAtX:cx y:y color:color];
+            SurfaceSetPixelAt (_surface, cx, y, color);
 }
 
 

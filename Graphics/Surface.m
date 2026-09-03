@@ -50,14 +50,12 @@
     if (x >= _width || y >= _height)
         return;
 
-    Pixel *f = (Pixel *)_pixels;
-    f[x + y * (_pitch + 4)] = color;
+    SurfaceSetPixelAt (self, x, y, color);
 }
 
 - (Pixel)getPixelAtX:(size_t)x y:(size_t)y
 {
-    Pixel *f = (Pixel *)_pixels;
-    return f[x+y*(_pitch+4)];
+    return SurfaceGetPixelAt (self, x, y);
 }
 
 @end
