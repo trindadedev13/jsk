@@ -15,6 +15,7 @@
         _pixels = pixels;
         _width = width;
         _height = height;
+        _pitch = pitch;
         _bpp = bpp;
         _redPos = redPos;
         _greenPos = greenPos;

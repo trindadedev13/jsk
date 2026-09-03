@@ -10,7 +10,8 @@
     self = [super init];
     if (self)
     {
-        
+        _surface = surface;
+        _font = font;
     }
     return self;
 }
