@@ -19,7 +19,7 @@ static void InitGraphics (VbeModeInfo *vmi)
 }
 
 void 
-JSKKernelMain (MultibootInfo *mbinfo, uint32_t magic)
+KernelMain (MultibootInfo *mbinfo, uint32_t magic)
 {
     (void)magic;
 

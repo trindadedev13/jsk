@@ -1,5 +1,5 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(_JSKKernelBootStart)
+ENTRY(_KernelBootStart)
 
 SECTIONS
 {

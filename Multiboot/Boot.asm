@@ -23,16 +23,16 @@ SECTION .multiboot
 align 16
 
 SECTION .text
-        GLOBAL   _JSKKernelBootStart
-        EXTERN   _JSKKernelStart
+        GLOBAL   _KernelBootStart
+        EXTERN   _KernelStart
 
-_JSKKernelBootStart:
+_KernelBootStart:
         PUSH     EAX
         PUSH     EBX
 
         XOR      EBP, EBP
 
-        CALL     _JSKKernelStart
+        CALL     _KernelStart
 
 HALT:
         HLT

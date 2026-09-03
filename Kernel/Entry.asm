@@ -1,7 +1,7 @@
 [BITS 32]
 
 SECTION .text
-        GLOBAL   _JSKKernelStart
+        GLOBAL   _KernelStart
 
         GLOBAL   __cxa_pure_virtual ; FALLBACK OF C++ VIRTUAL FUNCTIONS
 
@@ -9,9 +9,9 @@ SECTION .text
         EXTERN   __init_array_start
         EXTERN   __init_array_end
 
-        EXTERN   JSKKernelMain ; FROM KERNEL/MAIN.C
+        EXTERN   KernelMain ; FROM KERNEL/MAIN.C
 
-_JSKKernelStart:
+_KernelStart:
         MOV      ESI, [ESP + 4] ; SAVE MULTIBOOT INFO
         MOV      EDI, [ESP + 8] ; SAVE MAGIC NUMBER
 
@@ -32,7 +32,7 @@ INIT_ARRAYS.LOOP:
 INIT_ARRAYS.END:
         PUSH     EDI
         PUSH     ESI
-        CALL     JSKKernelMain
+        CALL     KernelMain
         ADD      ESP, 8      ; CLEAR FRAME
         JMP      $
 
