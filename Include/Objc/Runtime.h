@@ -70,6 +70,31 @@ typedef bool BOOL;
 #define OBJC_UNUSED
 #endif
 
+#if (__has_feature(objc_fixed_enum) || (__cplusplus && (__cplusplus > 199711L) && __has_extension(cxx_strong_enums)))
+#define _RT_NAMED_ENUM(ty, name) enum name : ty name; enum name : ty
+#define _RT_ANON_ENUM(ty) enum : ty
+#if __cplusplus
+#define NS_OPTIONS(ty,name) ty name; enum : ty
+#else
+#define NS_OPTIONS(ty,name) NS_ENUM(ty,name)
+#endif
+#else // this provides less information, but works with older compilers
+#define _RT_NAMED_ENUM(ty, name) ty name; enum
+#define _RT_ANON_ENUM(ty) enum
+#define NS_OPTIONS(ty, name) NS_ENUM(ty, name)
+#endif
+
+/**
+ * A bit of fairy dust to expand NS_ENUM to the correct variant
+ */
+#define _RT_GET_ENUM_MACRO(_first,_second,NAME,...) NAME
+
+/**
+ * The trick here is that placing the variadic args first will push the name
+ * that the _RT_GET_ENUM_MACRO expands to into the correct position.
+ */
+#define NS_ENUM(...) _RT_GET_ENUM_MACRO(__VA_ARGS__,_RT_NAMED_ENUM,_RT_ANON_ENUM)(__VA_ARGS__)
+
 /** 
  * this macro is used in method declarations
  * to specify that the method accepts a variable argument
