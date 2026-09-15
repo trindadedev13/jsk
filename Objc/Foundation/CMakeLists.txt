@@ -3,7 +3,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.22)
 SET (SOURCES
         NSObject.m
         NSAutoreleasePool.m
-        NSConstantString.m)
+        NSConstantString.m
+        NSString.m)
 
 INCLUDE (${CMAKE_SOURCE_DIR}/CMake/FixExts.cmake)
 
